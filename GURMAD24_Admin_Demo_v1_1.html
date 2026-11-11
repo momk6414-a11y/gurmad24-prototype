@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="so">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071b2b">
+<title>GURMAD 24 | Admin</title>
+<style>
+:root{--bg:#081827;--panel:#102438;--panel2:#142d43;--line:#244158;--text:#eef6fb;--muted:#9db2c3;--green:#24c78a;--blue:#45a7ff;--amber:#f5b942;--red:#ff6574;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#071725,#0b2032 55%,#071725);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}.login{width:min(420px,100%);background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 24px 70px #0006}.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.4px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#19c98a,#1385c7);display:grid;place-items:center;font-size:23px}.sub{color:var(--muted);font-size:13px}.login h1{font-size:25px;margin:28px 0 4px}.field{display:grid;gap:7px;margin:17px 0}.field label{font-size:13px;color:#c7d6e1}.field input{width:100%;padding:13px 14px;background:#091a29;border:1px solid var(--line);border-radius:11px;color:white;outline:none}.field input:focus{border-color:var(--blue)}.primary{border:0;background:linear-gradient(100deg,#19b77d,#168bc1);color:white;font-weight:750;border-radius:11px;padding:13px 17px}.login .primary{width:100%;margin-top:8px}.hint{font-size:12px;color:var(--muted);margin-top:16px}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}.sidebar{background:#091a29;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;gap:25px}.side-head{padding:0 10px}.side-head .sub{margin-top:5px}.nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid transparent;background:transparent;color:#b8cad8;padding:12px;border-radius:11px}.nav button.active,.nav button:hover{background:#142e43;border-color:#24465e;color:#fff}.nav .ico{width:22px;text-align:center;font-size:17px}.side-bottom{margin-top:auto;border-top:1px solid var(--line);padding:15px 10px;color:var(--muted);font-size:12px}
+main{padding:26px clamp(16px,3vw,38px);min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}.top h1{font-size:25px;margin:0}.top p{margin:4px 0 0;color:var(--muted);font-size:13px}.top-actions{display:flex;align-items:center;gap:10px}.pill{padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:#c4d6e3;font-size:12px}.logout{background:#172d40;color:#dce9f1;border:1px solid var(--line);padding:9px 12px;border-radius:10px}
+.section{display:none}.section.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:linear-gradient(145deg,#11283c,#0e2234);border:1px solid var(--line);border-radius:var(--radius);padding:18px}.card-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.card-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#1a3b50;font-size:18px}.metric{font-size:30px;font-weight:800;margin:12px 0 2px}.card small{color:var(--muted)}.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:15px}.panel h2{font-size:16px;margin:0 0 14px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.muted{color:var(--muted)}.status{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:5px 9px;font-size:11px;background:#20384b;color:#c9dbe7}.status.green{background:#103d35;color:#7ee3bc}.status.amber{background:#49391b;color:#ffd47b}.status.red{background:#492630;color:#ff9ca6}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:#8fa8bb;font-weight:600;padding:11px 9px;border-bottom:1px solid var(--line)}td{padding:13px 9px;border-bottom:1px solid #1b3549;color:#d9e6ee}tr:last-child td{border-bottom:0}.empty{text-align:center;color:var(--muted);padding:28px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{background:#0a1d2d;border:1px solid var(--line);border-radius:10px;color:#eaf3f8;padding:10px 12px}.toolbar input{min-width:190px;flex:1}.toolbar button{border:1px solid var(--line);background:#18344a;color:#eaf3f8;border-radius:10px;padding:10px 13px}.notice{padding:12px 14px;border:1px solid #5b4b28;background:#332b1c;color:#f5d28a;border-radius:12px;font-size:12px;margin-bottom:16px}.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.service{background:#10283c;border:1px solid var(--line);padding:18px;border-radius:15px}.service h3{font-size:15px;margin:8px 0}.service p{font-size:12px;color:var(--muted);margin:0}.service .big{font-size:27px;font-weight:800}.footer-note{font-size:12px;color:var(--muted);margin-top:18px}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{padding:12px;position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--line)}.side-head{display:none}.nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;padding:9px 11px;font-size:12px}.side-bottom{display:none}main{padding:20px 13px}.top{align-items:flex-start}.top h1{font-size:21px}.top-actions{flex-direction:column;align-items:flex-end}.service-grid{grid-template-columns:1fr}.cards{gap:9px}.card{padding:13px}.metric{font-size:25px}table{min-width:600px}.table-wrap{overflow:auto}}
+</style>
+</head>
+<body>
+<div id="loginView" class="login-wrap">
+  <form class="login" id="loginForm">
+    <div class="brand"><div class="logo">✚</div><div>GURMAD 24<div class="sub">ADMINISTRATION PORTAL</div></div></div>
+    <h1>Admin Login</h1><div class="sub">Galitaanka maamulka nidaamka gurmadka</div>
+    <div class="field"><label for="username">Email</label><input id="username" type="email" autocomplete="username" placeholder="admin@gurmad24.test" required></div>
+    <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Password" required></div>
+    <button class="primary" type="submit">Gal maamulka →</button>
+    <div class="hint">Demo login oo local ah. Login ammaan ah oo production ah wuxuu u baahan yahay backend auth.</div><div class="hint">Demo email: <code>admin@gurmad24.test</code><br>Demo password: <code>GurmadDemo24</code></div>
+    <div id="loginError" class="hint" style="color:#ff9ca6"></div>
+  </form>
+</div>
+<div id="appView" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-head"><div class="brand"><div class="logo">✚</div><div>GURMAD 24<div class="sub">ADMIN CONTROL</div></div></div></div>
+    <nav class="nav" id="nav">
+      <button class="active" data-page="overview"><span class="ico">▦</span> Dulmar</button>
+      <button data-page="requests"><span class="ico">◉</span> Codsiyada gurmadka</button>
+      <button data-page="ambulance"><span class="ico">✚</span> Ambulance</button>
+      <button data-page="fire"><span class="ico">♨</span> Dabdamiska</button>
+      <button data-page="police"><span class="ico">⬟</span> Booliiska</button>
+      <button data-page="users"><span class="ico">♙</span> Isticmaalayaasha</button>
+      <button data-page="reports"><span class="ico">▤</span> Warbixinnada</button>
+      <button data-page="settings"><span class="ico">⚙</span> Dejinta</button>
+    </nav>
+    <div class="side-bottom">GURMAD 24 · Admin workspace<br>Hal nidaam, adeegyo kala gaar ah.</div>
+  </aside>
+  <main>
+    <header class="top"><div><h1 id="pageTitle">Dulmar guud</h1><p>Ku soo dhowow xarunta maamulka GURMAD 24.</p></div><div class="top-actions"><span class="pill">● DEMO SESSION</span><button class="logout" id="logoutBtn">Ka bax</button></div></header>
+    <section class="section active" id="overview">
+      <div class="notice">Xogta hadda muuqata waa tusaale naqshadeed. Marka API-ga lagu xiro, tirakoobka iyo codsiyada dhabta ah ayaa halkan ka soo muuqan doona.</div>
+      <div class="cards">
+        <div class="card"><div class="card-top">Codsiyada maanta <span class="card-icon">◉</span></div><div class="metric">—</div><small>Sugaya xogta API-ga</small></div>
+        <div class="card"><div class="card-top">Ambulance <span class="card-icon">✚</span></div><div class="metric">—</div><small>Gaadiidka caafimaadka</small></div>
+        <div class="card"><div class="card-top">Dabdamis <span class="card-icon">♨</span></div><div class="metric">—</div><small>Kooxaha dabdamiska</small></div>
+        <div class="card"><div class="card-top">Booliis <span class="card-icon">⬟</span></div><div class="metric">—</div><small>Cutubyada booliiska</small></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><div class="panel-head"><h2>Codsiyadii ugu dambeeyay</h2><span class="status">API pending</span></div><div class="empty">Marka backend-ka lagu xiro, codsiyada cusub halkan ayay ka muuqanayaan.</div></div>
+        <div class="panel"><h2>Xaaladda adeegyada</h2><div style="display:grid;gap:15px">
+          <div class="panel-head"><span>Ambulance</span><span class="status">Sugaya isku-xir</span></div>
+          <div class="panel-head"><span>Dabdamiska</span><span class="status">Sugaya isku-xir</span></div>
+          <div class="panel-head"><span>Booliiska</span><span class="status">Sugaya isku-xir</span></div>
+        </div></div>
+      </div>
+    </section>
+    <section class="section" id="requests"><div class="panel"><div class="panel-head"><h2>Dhammaan codsiyada gurmadka</h2><span class="status">Live API: pending</span></div><div class="toolbar"><input placeholder="Raadi ID ama nooca gurmadka" disabled><select disabled><option>Dhammaan xaaladaha</option></select><button disabled>Raadi</button></div><div class="empty">Xogta codsiyada waxaa soo gelin doona API-ga backend-ka.</div></div></section>
+    <section class="section" id="ambulance"><div class="service-grid"><div class="service"><div class="big">✚</div><h3>Maamulka Ambulance</h3><p>Ku dar, wax ka beddel, ama la soco gaadiidka caafimaadka.</p></div><div class="service"><div class="big">⌖</div><h3>Goobta gaadiidka</h3><p>GPS iyo xaaladda gaadiidka marka tracking API la xiro.</p></div><div class="service"><div class="big">♙</div><h3>Shaqaalaha caafimaadka</h3><p>Maamulka darawallada iyo shaqaalaha loo xilsaaray.</p></div></div></section>
+    <section class="section" id="fire"><div class="service-grid"><div class="service"><div class="big">♨</div><h3>Kooxaha dabdamiska</h3><p>Maamulka kooxaha iyo gaadiidka dabdamiska.</p></div><div class="service"><div class="big">◉</div><h3>Dhacdooyinka</h3><p>La socodka codsiyada dabka iyo samatabbixinta.</p></div><div class="service"><div class="big">⌖</div><h3>Goobaha hawlgalka</h3><p>Goobta iyo xaaladda kooxaha marka API la xiro.</p></div></div></section>
+    <section class="section" id="police"><div class="service-grid"><div class="service"><div class="big">⬟</div><h3>Cutubyada booliiska</h3><p>Maamulka cutubyada iyo shaqaalaha loo xilsaaray.</p></div><div class="service"><div class="big">◉</div><h3>Codsiyada amniga</h3><p>La socodka codsiyada iyo xaaladdooda.</p></div><div class="service"><div class="big">⌖</div><h3>Hawlgalada</h3><p>Maamulka hawlgallada iyo xogta goobta.</p></div></div></section>
+    <section class="section" id="users"><div class="panel"><h2>Isticmaalayaasha iyo rukhsadaha</h2><div class="empty">Liiska isticmaalayaasha, doorarka Admin-ka iyo rukhsadaha waxaa lagu xiri doonaa API-ga.</div></div></section>
+    <section class="section" id="reports"><div class="panel"><h2>Warbixinnada</h2><div class="empty">Warbixinnada maalinlaha, toddobaadlaha iyo bilaha ayaa halkan laga soo saari doonaa marka xogta backend-ku diyaar noqoto.</div></div></section>
+    <section class="section" id="settings"><div class="panel"><h2>Dejinta nidaamka</h2><p class="muted">Qaybtan waxaa lagu xiri doonaa dejinta backend-ka, maamulka rukhsadaha iyo diiwaanka hawlgallada.</p><div class="notice">Ha gelin password ama API secret gudaha HTML-kan. Siraha iyo xaqiijinta login-ka waa inay ku jiraan server-ka.</div></div></section>
+    <div class="footer-note">GURMAD 24 · Admin UI Demo v1.1 · Secure backend integration pending</div>
+  </main>
+</div>
+<script>
+/*
+  INTEGRATION NOTES:
+  1) Replace the demo login handler with POST to your backend auth endpoint.
+  2) Store session in a secure, HttpOnly, SameSite cookie set by the server.
+  3) Fetch dashboard/request/service data from the existing GURMAD 24 API.
+  4) Protect every admin API route with server-side role checks.
+  Never put admin passwords, API secrets, or privileged tokens in this file.
+*/
+const loginView=document.getElementById('loginView');
+const appView=document.getElementById('appView');
+const loginError=document.getElementById('loginError');
+const DEMO_EMAIL='admin@gurmad24.test';
+const DEMO_PASSWORD='GurmadDemo24';
+function showAdmin(){loginView.classList.add('hidden');appView.classList.remove('hidden');}
+function showLogin(){appView.classList.add('hidden');loginView.classList.remove('hidden');document.getElementById('password').value='';}
+// Demo-only client-side authentication. Do not use for production access control.
+if(sessionStorage.getItem('gurmad24_demo_session')==='active') showAdmin();
+document.getElementById('loginForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const email=document.getElementById('username').value.trim().toLowerCase();
+  const password=document.getElementById('password').value;
+  if(email===DEMO_EMAIL && password===DEMO_PASSWORD){
+    sessionStorage.setItem('gurmad24_demo_session','active');loginError.textContent='';showAdmin();
+  }else{loginError.textContent='Email ama password demo waa khaldan yahay. Fadlan hubi xogta demo.';}
+});
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+  sessionStorage.removeItem('gurmad24_demo_session');showLogin();
+});
+const titles={overview:'Dulmar guud',requests:'Codsiyada gurmadka',ambulance:'Maamulka Ambulance',fire:'Maamulka Dabdamiska',police:'Maamulka Booliiska',users:'Isticmaalayaasha',reports:'Warbixinnada',settings:'Dejinta nidaamka'};
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-page]');if(!b)return;
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===b.dataset.page));
+  document.getElementById('pageTitle').textContent=titles[b.dataset.page];
+});
+</script>
+</body>
+</html>
