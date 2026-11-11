@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="so">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gurmad 24</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: mobile-first column (max 880px) with sticky header, role-specific bottom nav, bottom sheets for forms.
+   Identity: clinical teal-green with a coral emergency signal; clean white surfaces, soft shadows. */
+:root{
+  --bg:#EEF6F4; --surface:#FFFFFF; --surface-2:#F5FAF8; --ink:#0D2B2C; --muted:#5A7576; --line:#D9E8E5;
+  --brand:#0B8F72; --brand-strong:#066A55; --brand-soft:#DAF2EA; --on-brand:#FFFFFF;
+  --critical:#D2453B; --critical-soft:#FBE3E0; --warn:#A8690B; --warn-soft:#FBEFD6; --info:#235FA6; --info-soft:#DFEBF8;
+  --hero-a:#0A3B3A; --hero-b:#0B6B5B; --hero-ink:#E8FBF5;
+  --shadow:0 1px 2px rgba(10,50,48,.06),0 6px 18px rgba(10,50,48,.07);
+  --map-h-land:#2F4A3A; --map-h-sea:#173B4A; --map-h-road:rgba(255,255,255,.34); --map-h-block:rgba(255,255,255,.07);
+  --map-s-land:#5A5238; --map-s-sea:#1D4152; --map-s-road:rgba(255,235,200,.28); --map-s-block:rgba(0,0,0,.2);
+  --map-t-land:#E9F0EA; --map-t-sea:#BAD8EB; --map-t-road:#FFFFFF; --map-t-block:#D5E2D6;
+  --font-display:'Bricolage Grotesque','Inter',system-ui,sans-serif; --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1717; --surface:#102626; --surface-2:#142E2D; --ink:#E5F2EF; --muted:#8FABA8; --line:#1F3B3A;
+  --brand:#2BC9A0; --brand-strong:#7FE3C6; --brand-soft:#123A33; --on-brand:#06201B;
+  --critical:#FF7B70; --critical-soft:#3B1D1B; --warn:#E9B454; --warn-soft:#372D14; --info:#7DB4EA; --info-soft:#172B40;
+  --hero-a:#0B2E2D; --hero-b:#0E5A4D; --hero-ink:#E8FBF5; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.28);
+  --map-t-land:#22352F; --map-t-sea:#1B3A4B; --map-t-road:#3A524B; --map-t-block:#2B423A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1717; --surface:#102626; --surface-2:#142E2D; --ink:#E5F2EF; --muted:#8FABA8; --line:#1F3B3A;
+  --brand:#2BC9A0; --brand-strong:#7FE3C6; --brand-soft:#123A33; --on-brand:#06201B;
+  --critical:#FF7B70; --critical-soft:#3B1D1B; --warn:#E9B454; --warn-soft:#372D14; --info:#7DB4EA; --info-soft:#172B40;
+  --hero-a:#0B2E2D; --hero-b:#0E5A4D; --hero-ink:#E8FBF5; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.28);
+  --map-t-land:#22352F; --map-t-sea:#1B3A4B; --map-t-road:#3A524B; --map-t-block:#2B423A; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--font-body);min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit}
+button:disabled{cursor:not-allowed;opacity:.55}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.muted{color:var(--muted)}
+.wrap{max-width:880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.logo{width:42px;height:42px;flex:none}
+.logo .l-bg{fill:var(--brand)} .logo .l-ring{fill:none;stroke:var(--on-brand);stroke-opacity:.4;stroke-width:2;stroke-dasharray:2 4} .logo .l-x{stroke:var(--on-brand);stroke-width:5;stroke-linecap:round}
+.brand{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brand b{font-family:var(--font-display);font-weight:700;letter-spacing:.1em;font-size:16px;white-space:nowrap}
+.brand small{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spacer{flex:1}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{padding:6px 14px;border-radius:999px;font-weight:600;font-size:13px;color:var(--muted);text-align:center}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:14px;font-weight:600;background:var(--brand);color:var(--on-brand);text-align:center}
+.btn.ghost{background:var(--surface-2);color:var(--ink);border:1px solid var(--line);min-height:40px;padding:0 14px;border-radius:999px}
+.btn.soft{background:var(--brand-soft);color:var(--brand-strong)}
+.btn.danger{background:var(--critical-soft);color:var(--critical)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:0 14px;font-size:13.5px;border-radius:11px}
+
+/* pilot banner */
+.pilot{margin-top:14px;background:var(--warn-soft);color:var(--warn);border-radius:14px;padding:10px 14px;font-size:12.5px;line-height:1.45;text-align:center}
+.pilot b{font-weight:700}
+.main{padding-top:6px;padding-bottom:120px;display:flex;flex-direction:column;gap:18px}
+.main>.pilot{margin-bottom:0}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:22px;min-height:150px;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:var(--hero-ink);margin-top:14px;box-shadow:var(--shadow)}
+.hero .grid-bg{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1.2px);background-size:16px 16px;opacity:.7}
+.ecg{position:absolute;left:0;bottom:30px;width:100%;height:80px}
+.ecg path{fill:none;stroke:#6FF0C8;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:520;stroke-dashoffset:520;animation:ecg 3.6s ease-in-out infinite}
+@keyframes ecg{0%{stroke-dashoffset:520}55%,100%{stroke-dashoffset:0}}
+.hchip{position:absolute;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(2px)}
+.hchip.a{left:42%;top:18px}.hchip.b{left:30%;top:62px}.hchip.c{left:56%;top:12px}
+.ring{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:96px;height:96px;border-radius:50%;border:2px solid #6FF0C8;display:grid;place-items:center;box-shadow:0 0 0 8px rgba(111,240,200,.1)}
+.ring .ic{width:42px;height:42px;stroke-width:1.6}
+.hero-text{position:absolute;left:18px;top:18px;max-width:42%}
+.hero-text small{display:block;opacity:.8;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.hero-text b{font-family:var(--font-display);font-size:20px;line-height:1.15;display:block;margin-top:4px}
+
+.page-head h1{font-size:30px;line-height:1.1}
+.page-head p{color:var(--muted);margin-top:4px}
+.livebar{display:flex;align-items:center;gap:10px;color:var(--brand-strong);font-weight:600;font-size:14.5px;flex-wrap:wrap}
+.livebar .dot{width:10px;height:10px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 0 var(--brand);animation:beat 2s infinite}
+.livebar small{color:var(--muted);font-weight:500}
+@keyframes beat{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--brand) 55%,transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
+
+/* stat cards */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:720px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 14px 16px;box-shadow:var(--shadow);min-width:0;transition:transform .15s,border-color .15s}
+.stat:hover{border-color:var(--brand)}.stat:active{transform:scale(.98)}
+.stat-top{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13.5px;min-height:40px}
+.stat-top .ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-strong);flex:none}
+.stat-top .ico.crit{background:var(--critical-soft);color:var(--critical)}
+.stat-top .ico.inf{background:var(--info-soft);color:var(--info)}
+.stat-top .ico.wrn{background:var(--warn-soft);color:var(--warn)}
+.stat-top span.l{flex:1;line-height:1.25;min-width:0}
+.stat-top .go{width:16px;height:16px;opacity:.55}
+.num{font-family:var(--font-display);font-weight:700;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.num small{font-size:22px;color:var(--muted);font-weight:600}
+
+/* cards, rows */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.card-head h2,.card-head h3{min-width:0}
+.card-head h2{font-size:19px}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:12px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;min-width:0;transition:border-color .15s}
+button.row:hover{border-color:var(--brand)}
+.row-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.row-main b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-main small{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--info-soft);color:var(--info)}
+.chip.critical{background:var(--critical-soft);color:var(--critical)}.chip.high{background:var(--warn-soft);color:var(--warn)}.chip.medium{background:var(--info-soft);color:var(--info)}
+.chip.brand{background:var(--brand-soft);color:var(--brand-strong)}
+.pill{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap;background:var(--surface-2);color:var(--muted);flex:none}
+.pill.new,.pill.pending{background:var(--warn-soft);color:var(--warn)}
+.pill.dispatched,.pill.enroute,.pill.busy{background:var(--info-soft);color:var(--info)}
+.pill.athospital,.pill.approved,.pill.available,.pill.paid,.pill.active{background:var(--brand-soft);color:var(--brand-strong)}
+.pill.rejected,.pill.critical,.pill.expired{background:var(--critical-soft);color:var(--critical)}
+.pill.high{background:var(--warn-soft);color:var(--warn)}
+.empty{color:var(--muted);text-align:center;padding:22px 10px;border:1px dashed var(--line);border-radius:16px}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fchip{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13.5px;font-weight:500;white-space:nowrap;color:var(--muted)}
+.fchip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.subhead{display:flex;align-items:center;gap:10px;margin-top:14px}
+.subhead h1{font-size:24px}
+.back{width:42px;height:42px;border-radius:13px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.meter{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.meter i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+.kv div{min-width:0}
+.kv small{display:block;color:var(--muted);font-size:12.5px}
+.kv b{font-weight:600;overflow-wrap:anywhere}
+.org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.org h3{font-size:17px}
+.org .meta{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.org .meta div{display:flex;flex-direction:column;gap:5px}
+.org .meta span{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted)}
+.org .meta span b{color:var(--ink);font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;padding-bottom:16px;position:relative;color:var(--muted)}
+.tl li::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl .node{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;background:var(--surface)}
+.tl .node .ic{width:14px;height:14px;stroke-width:3;opacity:0}
+.tl li.done{color:var(--ink)}.tl li.done .node{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}.tl li.done .node .ic{opacity:1}
+.tl li.done::before{background:var(--brand)}
+.tl li.cur .node{box-shadow:0 0 0 5px color-mix(in srgb,var(--brand) 25%,transparent)}
+.tl li.cur b{color:var(--brand-strong)}
+.tl time{font-variant-numeric:tabular-nums;font-size:13px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+.input{width:100%;min-height:46px;padding:0 14px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2)}
+.input:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 25%,transparent)}
+select.input{appearance:auto}
+.hint{font-size:13px;color:var(--muted)}
+
+/* map */
+.map{position:relative;aspect-ratio:400/260;border-radius:16px;overflow:hidden;border:1px solid var(--line);--z:1;background:var(--land)}
+.map.hybrid{--land:var(--map-h-land);--sea:var(--map-h-sea);--road:var(--map-h-road);--block:var(--map-h-block)}
+.map.sat{--land:var(--map-s-land);--sea:var(--map-s-sea);--road:var(--map-s-road);--block:var(--map-s-block)}
+.map.street{--land:var(--map-t-land);--sea:var(--map-t-sea);--road:var(--map-t-road);--block:var(--map-t-block)}
+.map-layer{position:absolute;inset:0;transform:scale(var(--z));transition:transform .25s;transform-origin:42% 52%}
+.map-layer>svg{position:absolute;inset:0;width:100%;height:100%}
+.m-land{fill:var(--land)}.m-sea{fill:var(--sea)}.m-blocks rect{fill:var(--block)}.m-roads{stroke:var(--road);fill:none;stroke-linecap:round}
+.pin{position:absolute;transform:translate(-50%,-50%) scale(calc(1 / var(--z)));display:grid;place-items:center}
+.pin.hp{width:28px;height:28px;border-radius:9px;background:var(--surface);color:var(--brand-strong);border:2px solid var(--brand);box-shadow:var(--shadow)}
+.pin.hp .ic{width:15px;height:15px}
+.pin.rp{width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--brand);transition:left 4s linear,top 4s linear}
+.pin.cp{width:16px;height:16px;border-radius:50%;border:2px solid #fff;background:var(--info)}
+.pin.cp.critical{background:var(--critical)}.pin.cp.high{background:var(--warn)}
+.pin.cp::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid currentColor;opacity:0;animation:ping 2s infinite;color:inherit}
+.pin.cp.critical::after{border-color:var(--critical)}.pin.cp.high::after{border-color:var(--warn)}.pin.cp.medium::after{border-color:var(--info)}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+.map-ui{position:absolute;left:10px;right:10px;top:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.map-ui>*{pointer-events:auto}
+.map-ui .seg{background:var(--surface);box-shadow:var(--shadow)}
+.map-ui .seg button{padding:5px 10px;font-size:12.5px}
+.zoom{display:flex;flex-direction:column;background:var(--surface);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;align-self:flex-start}
+.zoom button{width:36px;height:34px;display:grid;place-items:center}
+.zoom button+button{border-top:1px solid var(--line)}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.map-legend span{display:inline-flex;align-items:center;gap:6px}
+.map-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding:8px max(8px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.nav-in{max-width:880px;margin:0 auto;display:flex;gap:4px}
+.nav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:14px;font-size:12px;font-weight:500;color:var(--muted);text-align:center}
+.nav button span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav button[aria-current="page"]{background:var(--brand-soft);color:var(--brand-strong);font-weight:600}
+
+/* sheets, toast */
+.scrim{position:fixed;inset:0;background:rgba(4,20,20,.55);z-index:40}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,560px);max-height:90%;overflow:auto;z-index:41;background:var(--surface);border-radius:24px 24px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:rise .22s ease-out}
+@keyframes rise{from{transform:translate(-50%,24px);opacity:0}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.sheet-head h2{font-size:21px}
+.x{width:40px;height:40px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;font-weight:500;font-size:14px;max-width:min(92%,460px);text-align:center;box-shadow:var(--shadow)}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:10px;margin-bottom:14px}
+.types button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface-2);font-weight:600;font-size:14px;text-align:center}
+.types button[aria-pressed="true"]{border-color:var(--critical);background:var(--critical-soft);color:var(--critical)}
+
+/* login */
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.role h3{font-size:18px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.role h3 .chip{width:38px;height:38px}
+
+/* sos */
+.sos{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:26px 16px}
+.sos-btn{position:relative;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FF8A7E,var(--critical) 62%);color:#fff;display:grid;place-items:center;box-shadow:0 12px 30px color-mix(in srgb,var(--critical) 45%,transparent);text-align:center}
+.sos-btn::before,.sos-btn::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--critical);animation:ping 2.6s infinite;opacity:0}
+.sos-btn::after{animation-delay:1.3s}
+.sos-btn .in{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font-display);font-weight:700;font-size:18px}
+.sos-btn .ic{width:44px;height:44px;stroke-width:1.7}
+.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.quick button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-weight:600;font-size:13px;text-align:center}
+.hcard{border-radius:22px;padding:20px;color:#EFFFFA;background:linear-gradient(135deg,var(--hero-a),var(--hero-b) 70%,#12A483);position:relative;overflow:hidden;box-shadow:var(--shadow);min-height:190px;display:flex;flex-direction:column;justify-content:space-between}
+.hcard::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;border:26px solid rgba(255,255,255,.08)}
+.hcard .tier{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.hcard .no{font-family:var(--font-display);font-size:22px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.hcard .who{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;font-size:13px}
+.hcard .who b{display:block;font-size:16px}
+
+@media(max-width:430px){.btn.ghost span{display:none}.btn.ghost{padding:0 12px}.page-head h1{font-size:26px}.hero-text{max-width:46%}.hchip.a{left:46%}.hchip.b{left:34%}.hchip.c{display:none}.ring{width:84px;height:84px;right:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ecg path{stroke-dashoffset:0}}
+</style>
+
+<style>:root{color-scheme:light}body{margin:0}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20V11M12 20V4M19 20v-6"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-hospital" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 8v6M9 11h6M10 21v-3h4v3"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.7c1.9.8 3.1 2.6 3.5 5.3"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c.8-4 4-6 8-6s7.2 2 8 6"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V6M3 15h18v3M21 15v-2.5A3.5 3.5 0 0 0 17.500 9H11v6"/><circle cx="7" cy="11.500" r="1.600"/></symbol>
+<symbol id="i-amb" viewBox="0 0 24 24"><path d="M2 17V7h11v10M13 10h4l4 4v3h-2M13 17h-2"/><circle cx="6.500" cy="17.500" r="2"/><circle cx="16.500" cy="17.500" r="2"/><path d="M7.500 9.500v3M6 11h3"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-8-4.900-8-11a4.500 4.500 0 0 1 8-2.800A4.500 4.500 0 0 1 20 9c0 6.100-8 11-8 11z"/></symbol>
+<symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 9h11a3 3 0 1 0-3-3M3 15h14a3 3 0 1 1-3 3M3 12h7"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.500"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9"/></symbol>
+<symbol id="i-siren" viewBox="0 0 24 24"><path d="M7 18v-6a5 5 0 0 1 10 0v6M5 18h14v3H5zM12 2v2M4.500 5 6 6.500M19.500 5 18 6.500"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+<symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.500-6 4 12 2.500-6h5"/></symbol>
+</defs>
+</svg>
+
+<div id="app"></div>
+<div id="toast-host"></div>
+
+<script>
+/* ---------- i18n: [Somali, English] ---------- */
+const D={
+overview:['Guudmar','Overview'],orgs:["Hay'adaha",'Organisations'],users:['Isticmaalayaasha','Users'],cards:['Kaararka','Cards'],finance:['Maaliyadda','Finance'],
+admin:['Maamulka','Administration'],adminSub:['Guudmarka madasha (qiimayaal tijaabo / sandbox).','Platform overview (demo / sandbox values).'],
+live:['Tooska ah - wuu is cusboonaysiiyaa','Live now - updates every few seconds'],updated:['La cusboonaysiiyay','Updated'],
+active:['Kiisaska firfircoon','Active cases'],today:['Maanta','Today'],resp:['Gurmadsiyaasha diyaar ah','Responders available'],hospMap:['Isbitaalada khariidadda','Hospitals on map'],
+liveMap:['Khariidad toos ah (tijaabo)','Live map (demo)'],hybrid:['Isku dhafan','Hybrid'],sat:['Satalayt','Satellite'],street:['Waddo','Street'],
+lgHosp:['Isbitaal','Hospital'],lgCase:['Kiis','Case'],lgResp:['Gurmadsade','Responder'],
+latest:['Kiisaska ugu dambeeyay','Latest cases'],seeAll:['Dhammaan','See all'],noCases:['Weli kiis ma jiro.','No cases yet.'],
+st_new:['Cusub','New'],st_dispatched:['La diray','Dispatched'],st_enroute:['Wadada ku jira','En route'],st_athospital:['Isbitaalka ku jira','At hospital'],st_closed:['Xidhan','Closed'],
+pr_critical:['Aad u degdeg','Critical'],pr_high:['Sare','High'],pr_medium:['Dhexe','Medium'],
+ty_cardiac:['Wadne','Cardiac'],ty_accident:['Shil','Accident'],ty_maternity:['Dhalmo','Maternity'],ty_breathing:['Neefsasho','Breathing'],ty_other:['Kale','Other'],
+all:['Dhammaan','All'],caseDetail:['Faahfaahinta kiiska','Case details'],caseList_active:['Kiisaska firfircoon','Active cases'],caseList_today:['Kiisaska maanta','Today\'s cases'],caseList_all:['Dhammaan kiisaska','All cases'],
+patient:['Bukaanka','Patient'],phone:['Taleefan','Phone'],location:['Goobta','Location'],created:['La abuuray','Created'],hospital:['Isbitaal','Hospital'],responder:['Gurmadsade','Responder'],unassigned:['Lama qoondayn','Unassigned'],priority:['Mudnaanta','Priority'],
+timeline:['Taariikhda kiiska','Case timeline'],assignHosp:['Qoondee isbitaal','Assign hospital'],assignResp:['Qoondee gurmadsade','Assign responder'],none:['Midna','None'],
+moveTo:['U gudub: ','Move to: '],needHosp:['Marka hore isbitaal qoondee.','Assign a hospital first.'],accept:['Aqbal kiiska','Accept case'],caseClosed:['Kiiskan waa xidhan yahay.','This case is closed.'],
+approve:['Ansixi','Approve'],reject:['Diid','Reject'],pending:['Sugaya ansixin','Pending approval'],approved:['La ansixiyay','Approved'],rejected:['La diiday','Rejected'],
+beds:['Sariiro bannaan','Free beds'],amb:['Ambalaas diyaar ah','Ambulances ready'],ambShort:['Ambalaas','Ambulances'],bedsShort:['Sariiro','Beds'],of:['ka mid ah','of'],
+search:['Raadi magac...','Search by name...'],role_user:['Isticmaale','Citizen'],role_responder:['Gurmadsade','Responder'],role_hospital:['Shaqaale isbitaal','Hospital staff'],
+cardsActive:['Kaararka firfircoon','Active cards'],cardsExpired:['Kaararka dhacay','Expired cards'],expires:['Dhacaya','Expires'],tier_basic:['Aasaasi','Basic'],tier_plus:['Plus','Plus'],tier_family:['Qoys','Family'],
+sandboxNote:['Lacag-bixinta waa sandbox kaliya, lacag dhab ah ma dhaqaaqayso.','Payments are sandbox-only. No real money moves.'],revenue:['Wadarta (sandbox)','Total (sandbox)'],txs:['Dhaqdhaqaaqyada','Transactions'],paid:['La bixiyay','Paid'],
+hello:['Salaan','Hello'],incoming:['Kiisaska soo socda','Incoming cases'],waiting:['Codsiyada sugaya isbitaal','Requests waiting for a hospital'],noWaiting:['Codsi sugaya ma jiro.','No requests waiting.'],
+myCases:['Kiisaskayga','My cases'],cases:['Kiisaska','Cases'],resources:['Agabka','Resources'],profile:['Xogta','Profile'],capacity:['Awoodda isbitaalka','Hospital capacity'],resTeam:['Kooxda gurmadka','Response team'],
+updateRes:['Cusboonaysii sariiraha iyo ambalaasyada si dadku u arkaan xaaladda dhabta ah.','Keep beds and ambulances up to date so patients see the real situation.'],
+status_available:['Diyaar','Available'],status_busy:['Mashquul','Busy'],status_offline:['La heli waa','Offline'],
+sos:['Codso gurmad','Request help'],sosHint:['Riix si aad u dirto codsi tijaabo ah.','Tap to send a simulated request.'],sosTitle:['Codso gurmad','Request help'],chooseType:['Dooro nooca xaaladda','Choose the situation'],
+yourLoc:['Goobtaada','Your location'],locPh:['Tusaale: Hodan, ag taal Suuqa','e.g. Hodan, near the market'],send:['Dir codsiga','Send request'],sent:['Codsiga waa la diray (tijaabo).','Request sent (simulated).'],
+myRequests:['Codsiyadayda','My requests'],hospitals:['Isbitaalada','Hospitals'],healthCard:['Kaarka caafimaadka','Health card'],yourActive:['Codsigaaga firfircoon','Your active request'],noRequests:['Weli codsi ma dirin.','You have not sent a request yet.'],
+renew:['Cusboonaysii (sandbox)','Renew (sandbox)'],renewed:['Kaarka waa la cusboonaysiiyay (sandbox).','Card renewed (sandbox).'],cardNo:['Lambarka kaarka','Card number'],holder:['Haysato','Holder'],payments:['Lacag-bixinadaada','Your payments'],
+nearby:['Isbitaalada u dhow','Nearby hospitals'],freeBeds:['bannaan','free'],km:['km','km'],
+welcome:['Soo dhawoow','Welcome'],welcomeSub:['Dooro sida aad u gelayso. Tani waa tijaabo, xogtu waa mid la jilay.','Choose how to sign in. This is a pilot; all data is simulated.'],
+enter:['Gal','Enter'],registerHosp:['Diiwaangeli isbitaal','Register a hospital'],hospName:['Magaca isbitaalka','Hospital name'],district:['Degmada','District'],bedsTotal:['Tirada sariiraha','Total beds'],ambTotal:['Tirada ambalaasyada','Total ambulances'],
+submitReg:['Dir diiwaangelinta','Submit registration'],regDone:['Diiwaangelintaada waa la helay. Waxay sugaysaa ansixinta maamulka.','Registration received. It is waiting for administrator approval.'],needName:['Fadlan geli magaca isbitaalka.','Please enter the hospital name.'],
+regPending:['Isbitaalkan wuxuu sugayaa ansixinta maamulka.','This hospital is waiting for administrator approval.'],regRejected:['Diiwaangelinta isbitaalkan waa la diiday.','This hospital registration was rejected.'],
+phoneLabel:['Taleefanka (tijaabo)','Phone (demo)'],pickHosp:['Dooro isbitaalkaaga','Select your hospital'],logout:['Ka bax','Log out'],close:['Xidh','Close'],back:['Dib','Back'],
+roleAdminDesc:['Maamul dhammaan madasha, isbitaalada iyo lacagaha.','Manage the platform, hospitals and payments.'],roleHospDesc:['Hel kiisaska, cusboonaysii sariiraha.','Receive cases and update beds.'],roleUserDesc:['Codso gurmad oo raac kiiskaaga.','Request help and track your case.'],
+respSheet:['Gurmadsiyaasha','Responders'],lang:['Luqad','Language'],
+pilotA:['KORMEERID HAY\'ADEED: tijaabada adeegga dijitaalka ah;','INSTITUTIONAL PILOT: digital service testing;'],
+pilotB:[' codsiyada degdegga ah waa la jilay, lacag-bixintu waa sandbox kaliya, dirista tooska ah ma jirto. Ma ahan xaalado degdeg ah oo dhab ah.',' emergency requests are simulated, payments are sandbox-only, and no live dispatch is available. Not for real emergencies.'],
+cardActive:['Firfircoon','Active'],navUsers:['Dadka','Users'],cardExpired:['Dhacay','Expired'],tabHome:['Hoyga','Home'],roleTag_admin:['Maamul','Administrator'],roleTag_hospital:['Isbitaal','Hospital'],roleTag_user:['Isticmaale','Citizen']
+};
+const t=k=>(D[k]||[k,k])[state.lang==='so'?0:1];
+
+/* ---------- state & data ---------- */
+const state={lang:'so',session:null,tab:'overview',nav:[],sheet:null,mapStyle:'hybrid',chip:'all',uRole:'all',uQ:'',sosType:'cardiac',toast:null};
+try{const l=localStorage.getItem('g24lang');if(l==='so'||l==='en')state.lang=l}catch(e){}
+
+const sod=new Date(new Date().setHours(0,0,0,0)).getTime();
+const ago=m=>Math.max(sod+60000,Date.now()-m*60000);
+const ORDER=['new','dispatched','enroute','athospital','closed'];
+const TI={cardiac:'heart',accident:'alert',maternity:'user',breathing:'wind',other:'plus'};
+const TPR={cardiac:'critical',breathing:'critical',accident:'high',maternity:'high',other:'medium'};
+
+const H=[
+{id:'h1',name:'Hodan Community Hospital',district:'Hodan',bedsF:12,bedsT:40,ambF:2,ambT:3,status:'approved',x:38,y:42,phone:'+252 61 555 0140',km:1.8},
+{id:'h2',name:'Waberi Medical Center',district:'Waberi',bedsF:7,bedsT:25,ambF:1,ambT:2,status:'approved',x:58,y:64,phone:'+252 61 555 0141',km:3.2},
+{id:'h3',name:'Karaan Maternity Hospital',district:'Karaan',bedsF:5,bedsT:18,ambF:1,ambT:1,status:'approved',x:30,y:72,phone:'+252 61 555 0142',km:4.5},
+{id:'h4',name:'Bondhere Clinic',district:'Bondhere',bedsF:4,bedsT:10,ambF:0,ambT:1,status:'pending',x:50,y:26,phone:'+252 61 555 0143',km:2.6}
+];
+const R=[
+{id:'r1',name:'Cali Nuur',status:'busy',h:'h1',x:43,y:47},
+{id:'r2',name:'Maryan Guled',status:'busy',h:'h3',x:34,y:68},
+{id:'r3',name:'Yaxye Dahir',status:'available',h:'h1',x:35,y:37},
+{id:'r4',name:'Sagal Axmed',status:'available',h:'h2',x:61,y:67}
+];
+const U=[
+{id:'u1',name:'Axmed Cali',role:'user',phone:'+252 61 555 0101',status:'active'},
+{id:'u2',name:'Ayaan Warsame',role:'user',phone:'+252 61 555 0102',status:'active'},
+{id:'u3',name:'Cali Nuur',role:'responder',phone:'+252 61 555 0103',status:'active'},
+{id:'u4',name:'Maryan Guled',role:'responder',phone:'+252 61 555 0104',status:'active'},
+{id:'u5',name:'Hibo Sheekh',role:'hospital',phone:'+252 61 555 0105',status:'active'},
+{id:'u6',name:'Mahad Jama',role:'user',phone:'+252 61 555 0106',status:'active'}
+];
+const K=[
+{no:'G24-0001-7741',u:'u1',tier:'plus',exp:'2027-03-14',status:'active'},
+{no:'G24-0002-1208',u:'u2',tier:'basic',exp:'2026-09-30',status:'expired'},
+{no:'G24-0003-5532',u:'u6',tier:'family',exp:'2027-01-22',status:'active'}
+];
+const T=[
+{id:'t1',u:'u1',amt:5,m:'EVC Plus',s:'paid',ts:ago(900)},
+{id:'t2',u:'u6',amt:9,m:'eDahab',s:'paid',ts:ago(700)},
+{id:'t3',u:'u2',amt:2,m:'Zaad',s:'pending',ts:ago(120)}
+];
+const C=[
+{id:'G24-0409',type:'cardiac',pr:'critical',patient:'Fadumo A.',phone:'+252 61 555 0111',loc:'Hodan, Suuqa Xamar Weyne',x:42,y:49,created:ago(140),status:'enroute',h:'h1',r:'r1',u:null,ev:[['new',140],['dispatched',136],['enroute',131]]},
+{id:'G24-0410',type:'accident',pr:'high',patient:'Cabdi M.',phone:'+252 61 555 0112',loc:'Waberi, Wadada Maka Al-Mukarama',x:59,y:58,created:ago(55),status:'new',h:null,r:null,u:null,ev:[['new',55]]},
+{id:'G24-0411',type:'maternity',pr:'high',patient:'Hodan C.',phone:'+252 61 555 0113',loc:'Karaan, ag taal Isgoyska',x:33,y:66,created:ago(22),status:'dispatched',h:'h3',r:'r2',u:null,ev:[['new',22],['dispatched',18]]},
+{id:'G24-0408',type:'breathing',pr:'critical',patient:'Ismaaciil X.',phone:'+252 61 555 0114',loc:'Hodan, Xaafadda Towfiiq',x:36,y:45,created:ago(330),status:'closed',h:'h1',r:'r3',u:null,ev:[['new',330],['dispatched',326],['enroute',322],['athospital',305],['closed',270]]},
+{id:'G24-0402',type:'accident',pr:'high',patient:'Xaawo F.',phone:'+252 61 555 0115',loc:'Waberi, Wadada Afgooye',x:55,y:68,created:sod-3600000*20,status:'closed',h:'h2',r:'r4',u:null,ev:[['new',0],['closed',0]]},
+{id:'G24-0398',type:'other',pr:'medium',patient:'Axmed Cali',phone:'+252 61 555 0101',loc:'Hodan',x:40,y:40,created:sod-3600000*50,status:'closed',h:'h1',r:'r3',u:'u1',ev:[['new',0],['closed',0]]}
+];
+C.forEach(c=>{c.ev=c.ev.map(([s,m],i)=>({s,t:c.created<sod?c.created+i*600000:ago(m)}))});
+let caseSeq=412;
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const I=(n,c='')=>`<svg class="ic ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const pad=n=>String(n).padStart(2,'0');
+const hm=ts=>{const d=new Date(ts);return pad(d.getHours())+':'+pad(d.getMinutes())};
+const hms=ts=>{const d=new Date(ts);return hm(ts)+':'+pad(d.getSeconds())};
+const isToday=ts=>new Date(ts).toDateString()===new Date().toDateString();
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const hosp=id=>H.find(h=>h.id===id);
+const resp=id=>R.find(r=>r.id===id);
+const user=id=>U.find(u=>u.id===id);
+const pill=(cls,txt)=>`<span class="pill ${cls}">${txt}</span>`;
+
+function scoped(){
+  const s=state.session;if(!s)return[];
+  if(s.role==='admin')return C;
+  if(s.role==='hospital')return C.filter(c=>c.h===s.hospitalId);
+  return C.filter(c=>c.u===s.userId);
+}
+const sorted=a=>[...a].sort((x,y)=>y.created-x.created);
+const activeOf=a=>a.filter(c=>c.status!=='closed');
+
+/* ---------- case logic ---------- */
+function pickResponder(hid){return R.find(r=>r.status==='available'&&r.h===hid)||R.find(r=>r.status==='available')}
+function advance(c){
+  const i=ORDER.indexOf(c.status);if(i<0||i>=ORDER.length-1)return;
+  const n=ORDER[i+1];
+  if(n==='dispatched'){
+    if(!c.h)return;
+    if(!c.r){const r=pickResponder(c.h);if(r){c.r=r.id;r.status='busy'}}
+  }
+  c.status=n;c.ev.push({s:n,t:Date.now()});
+  if(n==='closed'&&c.r){const r=resp(c.r);if(r)r.status='available'}
+}
+
+/* ---------- map ---------- */
+function mapHTML(o){
+  const {cs=[],hs=[],rs=[],zoom=false,style=state.mapStyle,id='map'}=o;
+  let blocks='';
+  for(let i=0;i<46;i++){const x=(i*53)%225,y=(i*97)%235,w=14+(i*7)%20,h=10+(i*5)%16;blocks+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/>`}
+  const pins=hs.map(h=>`<span class="pin hp" style="left:${h.x}%;top:${h.y}%" title="${esc(h.name)}">${I('hospital')}</span>`).join('')
+   +rs.map(r=>`<span class="pin rp" data-r="${r.id}" style="left:${r.x}%;top:${r.y}%" title="${esc(r.name)}"></span>`).join('')
+   +cs.map(c=>`<button class="pin cp ${c.pr}" data-act="open-case" data-id="${c.id}" style="left:${c.x}%;top:${c.y}%" aria-label="${esc(c.id)}"></button>`).join('');
+  const ui=zoom?`<div class="map-ui"><div class="seg" role="group" aria-label="Map">${['hybrid','sat','street'].map(m=>`<button data-act="map-style" data-m="${m}" aria-pressed="${style===m}">${t(m)}</button>`).join('')}</div>
+    <div class="zoom"><button data-act="zoom" data-d="1" aria-label="Zoom in">${I('plus')}</button><button data-act="zoom" data-d="-1" aria-label="Zoom out">${I('minus')}</button></div></div>`:'';
+  return `<div class="map ${style}" id="${id}"><div class="map-layer"><svg viewBox="0 0 400 260" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="m-land" width="400" height="260"/><g class="m-blocks">${blocks}</g>
+    <g class="m-roads"><path d="M0 92C80 104 160 70 252 98" stroke-width="5"/><path d="M0 170C90 160 170 190 266 150" stroke-width="5"/><path d="M96 0C108 90 84 170 112 260" stroke-width="4"/><path d="M190 0C176 80 206 150 190 260" stroke-width="4"/><path d="M0 40C70 50 140 26 236 40" stroke-width="2.5"/><path d="M0 218C80 210 170 228 250 206" stroke-width="2.5"/><path d="M50 0V260M150 0C160 100 140 160 150 260" stroke-width="2"/></g>
+    <path class="m-sea" d="M400 0V260H282C296 214 252 176 270 128C286 86 244 44 262 0Z"/></svg>${pins}</div>${ui}</div>`;
+}
+const legend=()=>`<div class="map-legend"><span><i style="background:var(--critical)"></i>${t('lgCase')}</span><span><i style="background:var(--brand)"></i>${t('lgHosp')}</span><span><i style="background:#fff;border:3px solid var(--brand)"></i>${t('lgResp')}</span></div>`;
+
+/* ---------- shared view pieces ---------- */
+function caseRow(c){
+  return `<button class="row" data-act="open-case" data-id="${c.id}">
+    <span class="chip ${c.pr}">${I(TI[c.type])}</span>
+    <span class="row-main"><b>${t('ty_'+c.type)} · ${esc(c.patient)}</b><small>${esc(c.loc)} · ${hm(c.created)}</small></span>
+    ${pill(c.status,t('st_'+c.status))}${I('chev','muted')}</button>`;
+}
+function stat(ic,tone,label,val,attrs){
+  return `<button class="stat" ${attrs}><span class="stat-top"><span class="ico ${tone}">${I(ic)}</span><span class="l">${label}</span>${I('chev','go')}</span><span class="num">${val}</span></button>`;
+}
+function caseListBlock(base){
+  let a=scoped();
+  if(base==='active')a=activeOf(a);else if(base==='today')a=a.filter(c=>isToday(c.created));
+  a=sorted(a);
+  const chips=['all',...ORDER].filter(s=>base!=='active'||s!=='closed');
+  const shown=state.chip==='all'?a:a.filter(c=>c.status===state.chip);
+  return `<div class="filters" role="group">${chips.map(s=>`<button class="fchip" data-act="chip" data-s="${s}" aria-pressed="${state.chip===s}">${s==='all'?t('all'):t('st_'+s)} ${s==='all'?'':'('+a.filter(c=>c.status===s).length+')'}</button>`).join('')}</div>
+    <div class="list">${shown.length?shown.map(caseRow).join(''):`<div class="empty">${t('noCases')}</div>`}</div>`;
+}
+function subhead(title){return `<div class="subhead"><button class="back" data-act="back" aria-label="${t('back')}">${I('back')}</button><h1>${title}</h1></div>`}
+
+/* ---------- case detail ---------- */
+function caseDetail(id){
+  const c=C.find(x=>x.id===id);if(!c)return '';
+  const s=state.session,h=c.h&&hosp(c.h),r=c.r&&resp(c.r);
+  const idx=ORDER.indexOf(c.status),next=ORDER[idx+1];
+  const approvedH=H.filter(x=>x.status==='approved');
+  let act='';
+  if(c.status==='closed')act=`<p class="hint">${t('caseClosed')}</p>`;
+  else if(s.role==='admin'){
+    const rs=R.filter(x=>x.status==='available'||x.id===c.r);
+    act=`<div class="field"><label for="selH">${t('assignHosp')}</label><select class="input" id="selH" data-change="assign-hospital" data-id="${c.id}"><option value="">${t('none')}</option>${approvedH.map(x=>`<option value="${x.id}" ${c.h===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div class="field"><label for="selR">${t('assignResp')}</label><select class="input" id="selR" data-change="assign-resp" data-id="${c.id}"><option value="">${t('none')}</option>${rs.map(x=>`<option value="${x.id}" ${c.r===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <button class="btn block" data-act="advance" data-id="${c.id}" ${next==='dispatched'&&!c.h?'disabled':''}>${t('moveTo')}${t('st_'+next)}</button>
+      ${next==='dispatched'&&!c.h?`<p class="hint" style="margin-top:8px">${t('needHosp')}</p>`:''}`;
+  } else if(s.role==='hospital'){
+    if(!c.h)act=`<button class="btn block" data-act="accept" data-id="${c.id}">${I('check')}${t('accept')}</button>`;
+    else if(c.h===s.hospitalId)act=`<button class="btn block" data-act="advance" data-id="${c.id}">${t('moveTo')}${t('st_'+next)}</button>`;
+  }
+  const tl=ORDER.map((st,i)=>{
+    const ev=c.ev.find(e=>e.s===st);
+    const cls=i<idx||(st==='closed'&&idx===4)?'done':i===idx?'done cur':'';
+    return `<li class="${cls}"><span class="node">${I('check')}</span><b>${t('st_'+st)}</b><time>${ev?hm(ev.t):''}</time></li>`;
+  }).join('');
+  return `${subhead(c.id)}
+  <div class="card"><div class="card-head" style="margin-bottom:14px"><div style="display:flex;gap:10px;align-items:center"><span class="chip ${c.pr}">${I(TI[c.type])}</span><div><h2>${t('ty_'+c.type)}</h2><small class="muted">${t('priority')}: ${t('pr_'+c.pr)}</small></div></div>${pill(c.status,t('st_'+c.status))}</div>
+    <div class="kv"><div><small>${t('patient')}</small><b>${esc(c.patient)}</b></div><div><small>${t('phone')}</small><b>${esc(c.phone)}</b></div>
+    <div><small>${t('location')}</small><b>${esc(c.loc)}</b></div><div><small>${t('created')}</small><b>${hm(c.created)}${isToday(c.created)?'':' · '+dstr(new Date(c.created))}</b></div>
+    <div><small>${t('hospital')}</small><b>${h?esc(h.name):t('unassigned')}</b></div><div><small>${t('responder')}</small><b>${r?esc(r.name):t('unassigned')}</b></div></div></div>
+  <div class="card">${mapHTML({cs:[c],hs:h?[h]:[],id:'mapc'})}${legend()}</div>
+  <div class="card"><div class="card-head"><h2>${t('timeline')}</h2></div><ol class="tl">${tl}</ol></div>
+  ${act?`<div class="card">${act}</div>`:''}`;
+}
+
+/* ---------- admin ---------- */
+function adminTabs(){
+  const tab=state.tab,ac=activeOf(C),td=C.filter(c=>isToday(c.created));
+  const rAv=R.filter(r=>r.status==='available').length,hOk=H.filter(h=>h.status==='approved');
+  if(tab==='overview')return `
+   <div class="hero"><div class="grid-bg"></div><svg class="ecg" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80H120L138 80L152 36L172 104L188 60L200 80H400"/></svg>
+    <div class="hero-text"><small>Gurmad 24</small><b>${t('admin')}</b></div>
+    <span class="hchip a">${I('chart')}</span><span class="hchip b">${I('users')}</span><span class="hchip c">${I('hospital')}</span><div class="ring">${I('shield')}</div></div>
+   <div class="page-head"><h1>${t('admin')}</h1><p>${t('adminSub')}</p></div>
+   <div class="livebar"><span class="dot"></span>${t('live')}<small>${t('updated')} <span id="stamp">${hms(Date.now())}</span></small></div>
+   <div class="stats">
+    ${stat('alert','crit',t('active'),ac.length,'data-act="open-list" data-b="active"')}
+    ${stat('chart','',t('today'),td.length,'data-act="open-list" data-b="today"')}
+    ${stat('users','inf',t('resp'),`${rAv}<small>/${R.length}</small>`,'data-act="sheet" data-s="responders"')}
+    ${stat('hospital','wrn',t('hospMap'),hOk.length,'data-act="tab" data-t="orgs"')}
+   </div>
+   <div class="card"><div class="card-head"><h2>${t('liveMap')}</h2></div>${mapHTML({cs:ac,hs:hOk,rs:R.filter(r=>r.status!=='offline'),zoom:true})}${legend()}</div>
+   <div class="card"><div class="card-head"><h2>${t('latest')}</h2><button class="btn ghost sm" data-act="open-list" data-b="all"><span style="display:inline">${t('seeAll')}</span>${I('chev')}</button></div>
+    <div class="list">${sorted(C).slice(0,4).map(caseRow).join('')}</div></div>`;
+  if(tab==='orgs')return `<div class="page-head" style="margin-top:14px"><h1>${t('orgs')}</h1></div><div class="org-grid">${H.map(h=>orgCard(h,true)).join('')}</div>`;
+  if(tab==='users'){
+    const q=state.uQ.toLowerCase();
+    return `<div class="page-head" style="margin-top:14px"><h1>${t('users')}</h1></div>
+     <div class="filters" role="group">${['all','user','responder','hospital'].map(r=>`<button class="fchip" data-act="urole" data-r="${r}" aria-pressed="${state.uRole===r}">${r==='all'?t('all'):t('role_'+r)}</button>`).join('')}</div>
+     <input class="input" id="uq" type="search" placeholder="${t('search')}" value="${esc(state.uQ)}" data-input="uq" aria-label="${t('search')}">
+     <div class="list" id="ulist">${usersList()}</div>`;
+  }
+  if(tab==='cards'){
+    const act=K.filter(k=>k.status==='active').length;
+    return `<div class="page-head" style="margin-top:14px"><h1>${t('cards')}</h1></div>
+     <div class="stats"><div class="stat"><span class="stat-top"><span class="ico">${I('card')}</span><span class="l">${t('cardsActive')}</span></span><span class="num">${act}</span></div>
+     <div class="stat"><span class="stat-top"><span class="ico crit">${I('card')}</span><span class="l">${t('cardsExpired')}</span></span><span class="num">${K.length-act}</span></div></div>
+     <div class="list">${K.map(k=>`<div class="row"><span class="chip brand">${I('card')}</span><span class="row-main"><b>${esc(user(k.u).name)} · ${t('tier_'+k.tier)}</b><small>${k.no} · ${t('expires')} ${k.exp}</small></span>${pill(k.status,t(k.status==='active'?'cardActive':'cardExpired'))}</div>`).join('')}</div>`;
+  }
+  if(tab==='finance'){
+    const tot=T.filter(x=>x.s==='paid').reduce((a,x)=>a+x.amt,0);
+    return `<div class="page-head" style="margin-top:14px"><h1>${t('finance')}</h1><p>${t('sandboxNote')}</p></div>
+     <div class="stats"><div class="stat" style="grid-column:1/-1"><span class="stat-top"><span class="ico">${I('receipt')}</span><span class="l">${t('revenue')}</span></span><span class="num">$${tot.toFixed(2)}</span></div></div>
+     <div class="card"><div class="card-head"><h2>${t('txs')}</h2></div><div class="list">${txList(T)}</div></div>`;
+  }
+  return '';
+}
+function usersList(){
+  const q=state.uQ.toLowerCase();
+  const a=U.filter(u=>(state.uRole==='all'||u.role===state.uRole)&&u.name.toLowerCase().includes(q));
+  return a.length?a.map(u=>`<div class="row"><span class="chip brand">${I('user')}</span><span class="row-main"><b>${esc(u.name)}</b><small>${esc(u.phone)}</small></span>${pill('active',t('role_'+u.role))}</div>`).join(''):`<div class="empty">—</div>`;
+}
+function txList(a){
+  return sorted(a.map(x=>({...x,created:x.ts}))).map(x=>`<div class="row"><span class="chip brand">${I('receipt')}</span><span class="row-main"><b>$${x.amt.toFixed(2)} · ${esc(x.m)} (sandbox)</b><small>${esc(user(x.u).name)} · ${hm(x.ts)}</small></span>${pill(x.s==='paid'?'paid':'pending',x.s==='paid'?t('paid'):t('pending'))}</div>`).join('')||`<div class="empty">—</div>`;
+}
+function orgCard(h,admin){
+  const bp=Math.round(h.bedsF/h.bedsT*100);
+  const st=pill(h.status,t(h.status));
+  const btns=admin?(h.status==='pending'?`<button class="btn sm" data-act="approve" data-id="${h.id}">${I('check')}${t('approve')}</button><button class="btn sm danger" data-act="reject" data-id="${h.id}">${I('x')}${t('reject')}</button>`
+    :h.status==='rejected'?`<button class="btn sm soft" data-act="approve" data-id="${h.id}">${I('check')}${t('approve')}</button>`
+    :`<button class="btn sm danger" data-act="reject" data-id="${h.id}">${t('reject')}</button>`):'';
+  return `<div class="card org"><div class="card-head" style="margin-bottom:2px"><h3>${esc(h.name)}</h3>${st}</div><small class="muted">${esc(h.district)} · ${esc(h.phone)}</small>
+   <div class="meta"><div><span>${t('beds')}<b>${h.bedsF}/${h.bedsT}</b></span><div class="meter"><i style="width:${bp}%"></i></div></div><div><span>${t('amb')}<b>${h.ambF}/${h.ambT}</b></span><div class="meter"><i style="width:${h.ambT?Math.round(h.ambF/h.ambT*100):0}%"></i></div></div></div>
+   ${btns?`<div class="actions">${btns}</div>`:''}</div>`;
+}
+
+/* ---------- hospital ---------- */
+function hospitalTabs(){
+  const s=state.session,me=hosp(s.hospitalId),mine=C.filter(c=>c.h===me.id),tab=state.tab;
+  const waiting=C.filter(c=>c.status==='new'&&!c.h);
+  if(tab==='overview')return `
+   <div class="page-head" style="margin-top:14px"><h1>${esc(me.name)}</h1><p>${esc(me.district)} · ${esc(me.phone)}</p></div>
+   <div class="livebar"><span class="dot"></span>${t('live')}<small>${t('updated')} <span id="stamp">${hms(Date.now())}</span></small></div>
+   <div class="stats">
+    ${stat('alert','crit',t('incoming'),activeOf(mine).length,'data-act="open-list" data-b="active"')}
+    ${stat('chart','',t('today'),mine.filter(c=>isToday(c.created)).length,'data-act="open-list" data-b="today"')}
+    ${stat('bed','inf',t('beds'),`${me.bedsF}<small>/${me.bedsT}</small>`,'data-act="tab" data-t="resources"')}
+    ${stat('amb','wrn',t('amb'),`${me.ambF}<small>/${me.ambT}</small>`,'data-act="tab" data-t="resources"')}
+   </div>
+   <div class="card"><div class="card-head"><h2>${t('waiting')}</h2></div><div class="list">${waiting.length?sorted(waiting).map(caseRow).join(''):`<div class="empty">${t('noWaiting')}</div>`}</div></div>
+   <div class="card"><div class="card-head"><h2>${t('liveMap')}</h2></div>${mapHTML({cs:activeOf(mine).concat(waiting),hs:[me],rs:R.filter(r=>r.h===me.id)})}${legend()}</div>
+   <div class="card"><div class="card-head"><h2>${t('latest')}</h2></div><div class="list">${sorted(mine).slice(0,3).map(caseRow).join('')||`<div class="empty">${t('noCases')}</div>`}</div></div>`;
+  if(tab==='cases'){state.chipBase='all';return `<div class="page-head" style="margin-top:14px"><h1>${t('myCases')}</h1></div>${caseListBlock('all')}`}
+  if(tab==='resources')return `<div class="page-head" style="margin-top:14px"><h1>${t('resources')}</h1><p>${t('updateRes')}</p></div>
+   <div class="card"><div class="card-head"><h2>${t('capacity')}</h2></div>
+    ${stepper('bed',t('beds'),me.bedsF,me.bedsT,'bed')}${stepper('amb',t('amb'),me.ambF,me.ambT,'amb')}</div>
+   <div class="card"><div class="card-head"><h2>${t('resTeam')}</h2></div><div class="list">${R.filter(r=>r.h===me.id).map(r=>`<div class="row"><span class="chip brand">${I('user')}</span><span class="row-main"><b>${esc(r.name)}</b></span>${pill(r.status,t('status_'+r.status))}</div>`).join('')}</div></div>`;
+  if(tab==='profile')return `<div class="page-head" style="margin-top:14px"><h1>${t('profile')}</h1></div>${orgCard(me,false)}
+   <button class="btn ghost" data-act="logout" style="align-self:flex-start">${I('logout')}<span style="display:inline">${t('logout')}</span></button>`;
+  return '';
+}
+function stepper(ic,label,val,max,kind){
+  return `<div class="row" style="margin-bottom:10px"><span class="chip brand">${I(ic)}</span><span class="row-main"><b>${label}</b><small>${t('of')} ${max}</small></span>
+   <button class="back" data-act="step" data-k="${kind}" data-d="-1" ${val<=0?'disabled':''} aria-label="-">${I('minus')}</button><b class="num" style="font-size:24px;min-width:34px;text-align:center">${val}</b>
+   <button class="back" data-act="step" data-k="${kind}" data-d="1" ${val>=max?'disabled':''} aria-label="+">${I('plus')}</button></div>`;
+}
+
+/* ---------- citizen ---------- */
+function userTabs(){
+  const s=state.session,me=user(s.userId),mine=sorted(C.filter(c=>c.u===me.id)),tab=state.tab,act=activeOf(mine)[0];
+  if(tab==='home')return `
+   <div class="page-head" style="margin-top:14px"><h1>${t('hello')}, ${esc(me.name.split(' ')[0])}</h1><p>${t('sosHint')}</p></div>
+   <div class="card sos"><button class="sos-btn" data-act="sheet" data-s="sos" aria-label="${t('sos')}"><span class="in">${I('siren')}${t('sos')}</span></button></div>
+   ${act?`<div class="card"><div class="card-head"><h2>${t('yourActive')}</h2></div>${caseRow(act)}</div>`:''}
+   <div class="quick"><button data-act="tab" data-t="requests"><span class="chip">${I('alert')}</span>${t('myRequests')}</button>
+     <button data-act="tab" data-t="hospitals"><span class="chip brand">${I('hospital')}</span>${t('hospitals')}</button>
+     <button data-act="tab" data-t="card"><span class="chip high">${I('card')}</span>${t('healthCard')}</button></div>`;
+  if(tab==='requests'){return `<div class="page-head" style="margin-top:14px"><h1>${t('myRequests')}</h1></div><div class="list">${mine.length?mine.map(caseRow).join(''):`<div class="empty">${t('noRequests')}</div>`}</div>`}
+  if(tab==='hospitals')return `<div class="page-head" style="margin-top:14px"><h1>${t('nearby')}</h1></div>
+   <div class="card">${mapHTML({hs:H.filter(h=>h.status==='approved')})}${legend()}</div>
+   <div class="list">${H.filter(h=>h.status==='approved').sort((a,b)=>a.km-b.km).map(h=>`<div class="row"><span class="chip brand">${I('hospital')}</span><span class="row-main"><b>${esc(h.name)}</b><small>${h.km} ${t('km')} · ${h.bedsF} ${t('freeBeds')} · ${esc(h.phone)}</small></span>${pill(h.bedsF>0?'available':'busy',h.bedsF>0?t('status_available'):t('status_busy'))}</div>`).join('')}</div>`;
+  if(tab==='card'){
+    const k=K.find(x=>x.u===me.id);
+    return `<div class="page-head" style="margin-top:14px"><h1>${t('healthCard')}</h1><p>${t('sandboxNote')}</p></div>
+     ${k?`<div class="hcard"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><span class="tier">${t('tier_'+k.tier)}</span>${I('pulse')}</div><div class="no">${k.no}</div>
+       <div class="who"><div><small>${t('holder')}</small><b>${esc(me.name)}</b></div><div style="text-align:right"><small>${t('expires')}</small><b>${k.exp}</b></div></div></div>
+      <button class="btn" data-act="renew">${I('card')}${t('renew')}</button>`:''}
+     <div class="card"><div class="card-head"><h2>${t('payments')}</h2></div><div class="list">${txList(T.filter(x=>x.u===me.id))}</div></div>`;
+  }
+  return '';
+}
+
+/* ---------- login ---------- */
+function login(){
+  return `<div class="hero"><div class="grid-bg"></div><svg class="ecg" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80H120L138 80L152 36L172 104L188 60L200 80H400"/></svg>
+    <div class="hero-text"><small>Gurmad 24</small><b>${t('welcome')}</b></div><span class="hchip a">${I('pulse')}</span><span class="hchip b">${I('hospital')}</span><div class="ring">${I('shield')}</div></div>
+   <div class="page-head"><p>${t('welcomeSub')}</p></div>
+   <div class="roles">
+    <div class="card role"><h3><span class="chip">${I('user')}</span>${t('roleUser')}</h3><p class="hint" style="margin-bottom:12px">${t('roleUserDesc')}</p>
+      <div class="field"><label for="lph">${t('phoneLabel')}</label><input class="input" id="lph" value="+252 61 555 0101" inputmode="tel"></div>
+      <button class="btn block" data-act="login" data-r="user">${t('enter')}</button></div>
+    <div class="card role"><h3><span class="chip brand">${I('hospital')}</span>${t('roleHospital')}</h3><p class="hint" style="margin-bottom:12px">${t('roleHospDesc')}</p>
+      <div class="field"><label for="lh">${t('pickHosp')}</label><select class="input" id="lh">${H.map(h=>`<option value="${h.id}">${esc(h.name)}${h.status==='approved'?'':' ('+t(h.status)+')'}</option>`).join('')}</select></div>
+      <button class="btn block" data-act="login" data-r="hospital">${t('enter')}</button>
+      <button class="btn block soft" style="margin-top:8px" data-act="sheet" data-s="register">${I('plus')}${t('registerHosp')}</button></div>
+    <div class="card role"><h3><span class="chip high">${I('shield')}</span>${t('roleAdmin')}</h3><p class="hint" style="margin-bottom:12px">${t('roleAdminDesc')}</p>
+      <button class="btn block" data-act="login" data-r="admin">${t('enter')}</button></div>
+   </div>`;
+}
+D.roleHospital=['Isbitaal','Hospital'];D.roleUser=['Isticmaale','Citizen'];D.roleAdmin=['Maamul','Administrator'];
+
+/* ---------- sheets ---------- */
+function sheetHTML(){
+  const sh=state.sheet;if(!sh)return '';
+  let title='',body='';
+  if(sh==='responders'){title=t('respSheet');body=`<div class="list">${R.map(r=>`<div class="row"><span class="chip brand">${I('user')}</span><span class="row-main"><b>${esc(r.name)}</b><small>${esc(hosp(r.h).name)}</small></span>${pill(r.status,t('status_'+r.status))}</div>`).join('')}</div>`}
+  if(sh==='sos'){title=t('sosTitle');body=`<p class="hint" style="margin-bottom:12px">${t('chooseType')}</p>
+    <div class="types">${Object.keys(TI).map(k=>`<button data-act="sos-type" data-k="${k}" aria-pressed="${state.sosType===k}">${I(TI[k])}${t('ty_'+k)}</button>`).join('')}</div>
+    <div class="field"><label for="sloc">${t('yourLoc')}</label><input class="input" id="sloc" placeholder="${t('locPh')}"></div>
+    <button class="btn block" style="background:var(--critical)" data-act="sos-send">${I('siren')}${t('send')}</button>`}
+  if(sh==='register'){title=t('registerHosp');body=`
+    <div class="field"><label for="rn">${t('hospName')}</label><input class="input" id="rn"></div>
+    <div class="field"><label for="rd">${t('district')}</label><select class="input" id="rd">${['Hodan','Waberi','Karaan','Bondhere','Yaaqshiid','Wadajir','Hawl-wadaag'].map(d=>`<option>${d}</option>`).join('')}</select></div>
+    <div class="field"><label for="rp">${t('phone')}</label><input class="input" id="rp" inputmode="tel" value="+252 61 555 "></div>
+    <div class="kv" style="margin-bottom:14px"><div class="field" style="margin:0"><label for="rb">${t('bedsTotal')}</label><input class="input" id="rb" type="number" min="0" value="20"></div><div class="field" style="margin:0"><label for="ra">${t('ambTotal')}</label><input class="input" id="ra" type="number" min="0" value="1"></div></div>
+    <button class="btn block" data-act="reg-submit">${t('submitReg')}</button>`}
+  return `<div class="scrim" data-act="close-sheet"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="sheet-head"><h2>${title}</h2><button class="x" data-act="close-sheet" aria-label="${t('close')}">${I('x')}</button></div>${body}</div>`;
+}
+
+/* ---------- shell ---------- */
+function navHTML(){
+  const s=state.session;if(!s||state.nav.length)return '';
+  const items=s.role==='admin'?[['overview','grid','overview'],['orgs','hospital','orgs'],['users','users','navUsers'],['cards','card','cards'],['finance','receipt','finance']]
+   :s.role==='hospital'?[['overview','grid','overview'],['cases','alert','cases'],['resources','bed','resources'],['profile','user','profile']]
+   :[['home','grid','tabHome'],['requests','alert','myRequests'],['hospitals','hospital','hospitals'],['card','card','healthCard']];
+  return `<nav class="nav" aria-label="Main"><div class="nav-in">${items.map(([k,ic,l])=>`<button data-act="tab" data-t="${k}" ${state.tab===k?'aria-current="page"':''}>${I(ic)}<span>${t(l)}</span></button>`).join('')}</div></nav>`;
+}
+function headerHTML(){
+  const s=state.session;
+  return `<header class="top"><div class="wrap"><svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><rect class="l-bg" width="48" height="48" rx="14"/><circle class="l-ring" cx="24" cy="24" r="18"/><path class="l-x" d="M24 14v20M14 24h20"/></svg>
+   <div class="brand"><b>GURMAD 24</b>${s?`<small>${t('roleTag_'+s.role)}${s.role==='hospital'?' · '+esc(hosp(s.hospitalId).name):''}</small>`:''}</div><div class="spacer"></div>
+   <div class="seg" role="group" aria-label="${t('lang')}"><button data-act="lang" data-l="so" aria-pressed="${state.lang==='so'}">SO</button><button data-act="lang" data-l="en" aria-pressed="${state.lang==='en'}">EN</button></div>
+   ${s?`<button class="btn ghost" data-act="logout" aria-label="${t('logout')}">${I('logout')}<span>${t('logout')}</span></button>`:''}</div></header>`;
+}
+function body(){
+  const s=state.session;if(!s)return login();
+  const top=state.nav[state.nav.length-1];
+  if(top){
+    if(top.v==='list')return subhead(t('caseList_'+top.b))+caseListBlock(top.b);
+    if(top.v==='case')return caseDetail(top.id);
+  }
+  return s.role==='admin'?adminTabs():s.role==='hospital'?hospitalTabs():userTabs();
+}
+function render(keepScroll){
+  const y=window.scrollY;
+  $('#app').innerHTML=headerHTML()+`<main class="wrap main"><div class="pilot"><b>${t('pilotA')}</b>${t('pilotB')}</div>${body()}</main>`+navHTML()+sheetHTML();
+  window.scrollTo(0,keepScroll?y:0);
+}
+function toast(msg){
+  const h=$('#toast-host');h.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;
+  clearTimeout(toast._t);toast._t=setTimeout(()=>{h.innerHTML=''},3200);
+}
+
+/* ---------- actions ---------- */
+const ACT={
+ lang(el){state.lang=el.dataset.l;try{localStorage.setItem('g24lang',state.lang)}catch(e){}render(true)},
+ logout(){state.session=null;state.nav=[];state.sheet=null;state.tab='overview';render()},
+ tab(el){state.tab=el.dataset.t;state.nav=[];state.chip='all';render()},
+ 'open-list'(el){state.nav.push({v:'list',b:el.dataset.b});state.chip='all';render()},
+ 'open-case'(el){state.nav.push({v:'case',id:el.dataset.id});state.sheet=null;render()},
+ back(){state.nav.pop();state.chip='all';render()},
+ chip(el){state.chip=el.dataset.s;render(true)},
+ advance(el){const c=C.find(x=>x.id===el.dataset.id);if(c)advance(c);render(true)},
+ accept(el){const c=C.find(x=>x.id===el.dataset.id);if(c&&state.session.hospitalId){c.h=state.session.hospitalId;advance(c)}render(true)},
+ approve(el){hosp(el.dataset.id).status='approved';render(true)},
+ reject(el){hosp(el.dataset.id).status='rejected';render(true)},
+ step(el){const me=hosp(state.session.hospitalId),d=+el.dataset.d;
+   if(el.dataset.k==='bed')me.bedsF=Math.max(0,Math.min(me.bedsT,me.bedsF+d));else me.ambF=Math.max(0,Math.min(me.ambT,me.ambF+d));render(true)},
+ sheet(el){state.sheet=el.dataset.s;render(true)},
+ 'close-sheet'(){state.sheet=null;render(true)},
+ 'sos-type'(el){state.sosType=el.dataset.k;const v=$('#sloc')?.value||'';render(true);const n=$('#sloc');if(n)n.value=v},
+ 'sos-send'(){
+   const me=user(state.session.userId),loc=($('#sloc').value||'').trim()||'Hodan',type=state.sosType,now=Date.now();
+   caseSeq++;C.push({id:'G24-0'+caseSeq,type,pr:TPR[type],patient:me.name,phone:me.phone,loc,x:30+Math.round(Math.random()*30),y:35+Math.round(Math.random()*35),created:now,status:'new',h:null,r:null,u:me.id,ev:[{s:'new',t:now}]});
+   state.sheet=null;render(true);toast(t('sent'));
+ },
+ renew(){
+   const me=user(state.session.userId),k=K.find(x=>x.u===me.id);if(!k)return;
+   const base=k.status==='active'?new Date(k.exp):new Date();base.setFullYear(base.getFullYear()+1);
+   k.exp=dstr(base);k.status='active';T.push({id:'t'+(T.length+1),u:me.id,amt:k.tier==='basic'?2:k.tier==='plus'?5:9,m:'EVC Plus',s:'paid',ts:Date.now()});
+   render(true);toast(t('renewed'));
+ },
+ 'map-style'(el){
+   state.mapStyle=el.dataset.m;const m=$('#map');if(m)m.className='map '+state.mapStyle;
+   document.querySelectorAll('[data-act="map-style"]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===state.mapStyle));
+ },
+ zoom(el){const m=$('#map');if(!m)return;let z=parseFloat(getComputedStyle(m).getPropertyValue('--z'))||1;z=Math.max(1,Math.min(2.4,z+(+el.dataset.d)*.4));m.style.setProperty('--z',z)},
+ urole(el){state.uRole=el.dataset.r;render(true)},
+ login(el){
+   const r=el.dataset.r;
+   if(r==='admin')state.session={role:'admin'};
+   else if(r==='user')state.session={role:'user',userId:'u1'};
+   else{
+     const h=hosp($('#lh').value);
+     if(h.status==='pending')return toast(t('regPending'));
+     if(h.status==='rejected')return toast(t('regRejected'));
+     state.session={role:'hospital',hospitalId:h.id};
+   }
+   state.tab=r==='user'?'home':'overview';state.nav=[];render();
+ },
+ 'reg-submit'(){
+   const n=($('#rn').value||'').trim();if(!n)return toast(t('needName'));
+   const b=Math.max(0,parseInt($('#rb').value)||0),a=Math.max(0,parseInt($('#ra').value)||0);
+   H.push({id:'h'+(H.length+1),name:n,district:$('#rd').value,bedsF:b,bedsT:b,ambF:a,ambT:a,status:'pending',x:20+Math.round(Math.random()*50),y:20+Math.round(Math.random()*55),phone:$('#rp').value,km:+(1+Math.random()*5).toFixed(1)});
+   state.sheet=null;render();toast(t('regDone'));
+ }
+};
+const CH={
+ 'assign-hospital'(el){const c=C.find(x=>x.id===el.dataset.id);c.h=el.value||null;render(true)},
+ 'assign-resp'(el){
+   const c=C.find(x=>x.id===el.dataset.id);
+   if(c.r&&c.status!=='new'){}
+   const old=c.r&&resp(c.r);if(old&&c.status!=='closed')old.status='available';
+   c.r=el.value||null;const nr=c.r&&resp(c.r);if(nr&&c.status!=='closed'&&c.status!=='new')nr.status='busy';
+   render(true);
+ }
+};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el&&ACT[el.dataset.act])ACT[el.dataset.act](el,e)});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-change]');if(el&&CH[el.dataset.change])CH[el.dataset.change](el)});
+document.addEventListener('input',e=>{const el=e.target.closest('[data-input]');if(el&&el.dataset.input==='uq'){state.uQ=el.value;const l=$('#ulist');if(l)l.innerHTML=usersList()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.sheet){state.sheet=null;render(true)}});
+
+/* live feel: refresh the stamp and drift responder markers */
+setInterval(()=>{
+  const s=$('#stamp');if(s)s.textContent=hms(Date.now());
+  document.querySelectorAll('.pin.rp').forEach(p=>{
+    const r=resp(p.dataset.r);if(!r||r.status!=='busy')return;
+    r.x=Math.max(10,Math.min(70,r.x+(Math.random()-.5)*3));r.y=Math.max(15,Math.min(80,r.y+(Math.random()-.5)*3));
+    p.style.left=r.x+'%';p.style.top=r.y+'%';
+  });
+},4000);
+
+render();
+</script>
+
+</body>
+</html>
